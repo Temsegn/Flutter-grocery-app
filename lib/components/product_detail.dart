@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/screens/providerPage.dart';
+import 'package:provider/provider.dart';
+
 class ProductDetail extends StatelessWidget {
   final ProductModel product;
 
@@ -10,24 +13,23 @@ class ProductDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
-        backgroundColor: Colors.green, // App bar color
-        elevation: 0, // Remove shadow
+        backgroundColor: Colors.green,  
+        elevation: 0,  
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image with Favorite Icon
-            Stack(
+             Stack(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     product.imageUrl,
-                    height: 300, // Fixed height for the image
+                    height: 300, 
                     width: double.infinity,
-                    fit: BoxFit.cover, // Ensures the image fills the container
+                    fit: BoxFit.cover,  
                   ),
                 ),
                 Positioned(
@@ -35,11 +37,11 @@ class ProductDetail extends StatelessWidget {
                   right: 16.0,
                   child: IconButton(
                     onPressed: () {
-                      // Handle Like action
-                    },
+                     },
                     icon: Icon(
                       Icons.favorite_border,
                       color: Colors.red,
+                      
                       size: 30,
                     ),
                   ),
@@ -47,10 +49,9 @@ class ProductDetail extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 20), // Spacing
+            SizedBox(height: 20),  
 
-            // Product Name and Price
-            Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -71,17 +72,17 @@ class ProductDetail extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 16), // Spacing
+            SizedBox(height: 16),  
 
-            // Add to Cart Button
-            SizedBox(
-              width: double.infinity, // Full-width button
+             SizedBox(
+              width: double.infinity,  
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle Add to Cart action
-                },
+                     Provider.of<FavoriteProvider>(context,listen: false).addToFavorite(product);
+
+                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Button color
+                  backgroundColor: Colors.green,  
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -97,17 +98,16 @@ class ProductDetail extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20), // Spacing
+            SizedBox(height: 20),  
 
-            // Product Description
-            Text(
+             Text(
               'Description',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8), // Spacing
+            SizedBox(height: 8),  
             Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
               style: TextStyle(

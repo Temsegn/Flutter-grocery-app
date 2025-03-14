@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/product_model.dart';
-import '../providerPage.dart';
+ import '../providerPage.dart';
 
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
 
-    // Group products by name and count their quantity
-    final productCounts = <String, int>{};
+     final productCounts = <String, int>{};
     for (final product in cartProvider.cartItems) {
       productCounts[product.name] = (productCounts[product.name] ?? 0) + 1;
     }
-
+   
     return Scaffold(
       appBar: AppBar(title: Text('Cart')),
       body: Column(

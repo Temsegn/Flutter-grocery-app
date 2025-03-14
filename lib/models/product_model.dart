@@ -13,9 +13,13 @@ class ProductModel {
   @HiveField(2)
   final double price;
 
+  @HiveField(3)
+  bool? isFavorite;
+
   ProductModel({
     required this.name,
     required this.imageUrl,
     required this.price,
+    this.isFavorite, // Default value
   });
-}
+ }

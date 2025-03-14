@@ -22,19 +22,28 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 }
- 
 class FavoriteProvider with ChangeNotifier {
   final Box<ProductModel> _favoriteBox = Hive.box<ProductModel>('favorites');
 
   List<ProductModel> get favoriteItems => _favoriteBox.values.toList();
 
+  bool isFavorite(ProductModel product) {
+    return _favoriteBox.values.contains(product);
+  }
+
   void addToFavorite(ProductModel product) {
-    _favoriteBox.add(product);
-    notifyListeners();
+    if (!_favoriteBox.values.contains(product)) {
+      product.isFavorite = true; // Update isFavorite state
+      _favoriteBox.add(product);
+      notifyListeners();
+    }
   }
 
   void removeFromFavorite(ProductModel product) {
-    final key = _favoriteBox.keyAt(_favoriteBox.values.toList().indexOf(product));
+    final key = _favoriteBox.keyAt(
+      _favoriteBox.values.toList().indexOf(product),
+    );
+    product.isFavorite = false; // Update isFavorite state
     _favoriteBox.delete(key);
     notifyListeners();
   }
