@@ -17,8 +17,8 @@ class FavoritePage extends StatelessWidget {
           return ListTile(
             leading: Image.asset(
               product.imageUrl,
-              width: 50,
-              height: 50,
+              width: 70,
+              height: 70,
               fit: BoxFit.cover,
             ),
             title: Text(product.name),

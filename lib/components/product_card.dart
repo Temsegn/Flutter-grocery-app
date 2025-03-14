@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/models/product_model.dart';
 import '../screens/providerPage.dart';
-import 'package:provider/provider.dart'; // Add this line
-
-class ProductCard extends StatelessWidget {
+import 'package:provider/provider.dart';
+class ProductCard extends StatefulWidget {
   final ProductModel product;
   final VoidCallback onTap;
   final VoidCallback onFavoriteTap;
@@ -17,11 +16,16 @@ class ProductCard extends StatelessWidget {
   });
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: size.width * 0.45, // Responsive width
         decoration: BoxDecoration(
@@ -39,13 +43,15 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              fit: FlexFit.loose,
+             Flexible(
+              fit: FlexFit.loose,  
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(6)),
                 child: Image.asset(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
+                  widget.product.imageUrl,
+                  fit:
+                      BoxFit
+                          .cover, // Ensures the image covers the area without cutting
                   width: double.infinity,
                 ),
               ),
@@ -56,57 +62,45 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    widget.product.name,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
                   Text(
-                    '\$${product.price.toStringAsFixed(2)}',
+                    '\$${widget.product.price.toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 14, color: Colors.green),
                   ),
                   SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Consumer<FavoriteProvider>(
-                  builder: (context, favoriteProvider, child) {
-                    final isFavorite = favoriteProvider.favoriteItems.contains(product);
-                    return IconButton(
-                      icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : null, 
+                      IconButton(
+                        icon: Icon(Icons.favorite_border,
+                         color: Provider.of<FavoriteProvider>(context,listen: true).favoriteItems.contains(widget.product) ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: widget.onFavoriteTap,
                       ),
-                      onPressed: () {
-                        if (isFavorite) {
-                          favoriteProvider.removeFromFavorite(product);
-                        } else {
-                          favoriteProvider.addToFavorite(product);
-                        }
-                      },
-                    );
-                  },
-                ),
                       // Smaller Add to Cart Button
                       SizedBox(
                         width: 80, // Set a fixed width for the button
                         height: 30, // Set a fixed height for the button
                         child: ElevatedButton(
-                          onPressed: onAddToCartTap,
+                          onPressed: widget.onAddToCartTap,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             padding: EdgeInsets.symmetric(
                               vertical: 4,
                               horizontal: 8,
-                            ), // Minimal padding
+                            ),  
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
                             minimumSize: Size(
                               0,
                               0,
-                            ), // Remove default minimum size constraints
+                            ),  
                           ),
                           child: Text(
                             "Add to Cart",

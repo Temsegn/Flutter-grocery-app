@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/models/product_model.dart';
 import 'package:grocery_app/components/product_card.dart';
 import 'package:grocery_app/components/product_detail.dart';
+import 'package:grocery_app/screens/cart/cart_page.dart';
+import 'package:grocery_app/screens/favorite/favorite_page.dart';
 import 'package:grocery_app/screens/providerPage.dart';
 import 'package:provider/provider.dart';
-import '../../database/sample_data.dart';
-import 'package:hive/hive.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -15,9 +15,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- 
-  CartProvider Cart=CartProvider();
-   FavoriteProvider Favorite=FavoriteProvider();   
+  final List<ProductModel> products = [
+    ProductModel(
+      name: 'Mango',
+      imageUrl: 'assets/images/Img_1.png',
+      price: 1.99, // Ensure this is a double
+    ),
+    ProductModel(
+      name: 'Apple',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99, // Ensure this is a double
+    ),
+    ProductModel(
+      name: 'Lemon',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99,
+    ),
+    ProductModel(
+      name: 'Banana',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99,
+    ),
+    ProductModel(
+      name: 'Orange',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99,
+    ),
+    ProductModel(
+      name: 'Grapes',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99,
+    ),
+    ProductModel(
+      name: 'Pineapple',
+      imageUrl: 'assets/images/Img_1.png',
+
+      price: 1.99,
+    ),
+  ];
+
   void navigateToProductDetail(BuildContext context, ProductModel product) {
     Navigator.push(
       context,
@@ -38,6 +79,26 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Product List'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -52,16 +113,25 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             final product = products[index];
             return ProductCard(
-              product: product, 
+              product: product,
               onTap: () => navigateToProductDetail(context, product),
-              onFavoriteTap: () => () {
-                          if (Favorite.favoriteItems.contains(product)) {
-                            Favorite.removeFromFavorite(product); 
-                          } else {
-                            Favorite.addToFavorite(product);
-                          }
-                        },
-              onAddToCartTap: () => context.read<CartProvider>().addToCart(product),
+              onFavoriteTap: () {
+                final favoriteProvider = Provider.of<FavoriteProvider>(
+                  context,
+                  listen: false,
+                );
+                if (favoriteProvider.favoriteItems.contains(product)) {
+                  favoriteProvider.removeFromFavorite(product);
+                } else {
+                  favoriteProvider.addToFavorite(product);
+                }
+              },
+
+              onAddToCartTap:
+                  () => Provider.of<CartProvider>(
+                    context,
+                    listen: false,
+                  ).addToCart(product),
             );
           },
         ),
