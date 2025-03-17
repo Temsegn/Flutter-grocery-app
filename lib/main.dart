@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'models/product_model.dart'; 
 import 'screens/providerPage.dart';
+import 'themeData/theme_data.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -29,6 +30,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+    return MaterialApp(debugShowCheckedModeBanner: false,
+    theme: CustomTheme.lightTheme,
+    darkTheme: CustomTheme.darkTheme,
+    themeMode: Provider.of<FavoriteProvider>(context).themeMode,
+     home: HomePage());
   }
 }

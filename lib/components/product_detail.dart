@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/models/product_model.dart';
-import 'package:grocery_app/screens/providerPage.dart';
 import 'package:provider/provider.dart';
+import 'package:grocery_app/screens/providerPage.dart';
 
 class ProductDetail extends StatelessWidget {
   final ProductModel product;
 
   const ProductDetail({required this.product});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
-        backgroundColor: Colors.green,  
-        elevation: 0,  
+        backgroundColor: theme.primaryColor,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Stack(
+            Stack(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     product.imageUrl,
-                    height: 300, 
+                    height: 300,
                     width: double.infinity,
-                    fit: BoxFit.cover,  
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Positioned(
@@ -37,52 +39,44 @@ class ProductDetail extends StatelessWidget {
                   right: 16.0,
                   child: IconButton(
                     onPressed: () {
-                     },
+                      Provider.of<FavoriteProvider>(context, listen: false)
+                          .addToFavorite(product);
+                    },
                     icon: Icon(
                       Icons.favorite_border,
-                      color: Colors.red,
-                      
+                      color: theme.colorScheme.secondary,
                       size: 30,
                     ),
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 20),  
-
-             Row(
+            SizedBox(height: 20),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   product.name,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.headlineSmall,
                 ),
                 Text(
                   '\$${product.price.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 16),  
-
-             SizedBox(
-              width: double.infinity,  
+            SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                     Provider.of<FavoriteProvider>(context,listen: false).addToFavorite(product);
-
-                 },
+                  Provider.of<FavoriteProvider>(context, listen: false)
+                      .addToFavorite(product);
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,  
+                  backgroundColor: theme.colorScheme.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -90,29 +84,24 @@ class ProductDetail extends StatelessWidget {
                 ),
                 child: Text(
                   'Add to Cart',
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: theme.textTheme.labelLarge?.copyWith(
                     color: Colors.white,
                   ),
                 ),
               ),
             ),
-
-            SizedBox(height: 20),  
-
-             Text(
+            SizedBox(height: 20),
+            Text(
               'Description',
-              style: TextStyle(
-                fontSize: 20,
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),  
+            SizedBox(height: 8),
             Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.disabledColor,
               ),
             ),
           ],

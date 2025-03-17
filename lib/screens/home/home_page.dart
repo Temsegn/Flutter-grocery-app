@@ -32,7 +32,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleFavoriteTap(ProductModel product) {
-    final favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
+    final favoriteProvider = Provider.of<FavoriteProvider>(
+      context,
+      listen: false,
+    );
     if (favoriteProvider.isFavorite(product)) {
       favoriteProvider.removeFromFavorite(product);
     } else {
@@ -46,10 +49,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<FavoriteProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Product List'),
         actions: [
+          Switch(
+            value: theme.themeMode == ThemeMode.dark,
+            onChanged: (value) => theme.toggleTheme(),
+           ),
           IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:grocery_app/models/product_model.dart';
+import 'package:provider/provider.dart';
 import 'package:grocery_app/screens/providerPage.dart';
+
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -19,6 +20,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: onTap,
@@ -26,7 +28,7 @@ class ProductCard extends StatelessWidget {
         width: size.width * 0.45,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          color: Colors.white,
+          color: theme.cardColor,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -57,14 +59,18 @@ class ProductCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
                   Text(
                     '\$${product.price.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 14, color: Colors.green),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
                   ),
                   SizedBox(height: 8),
                   Row(
@@ -88,7 +94,7 @@ class ProductCard extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: onAddToCartTap,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: theme.buttonTheme.colorScheme?.primary,
                             padding: EdgeInsets.symmetric(
                               vertical: 4,
                               horizontal: 8,
@@ -100,7 +106,10 @@ class ProductCard extends StatelessWidget {
                           ),
                           child: Text(
                             "Add to Cart",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.buttonTheme.colorScheme?.onPrimary,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),

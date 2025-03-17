@@ -30,6 +30,14 @@ class FavoriteProvider with ChangeNotifier {
   bool isFavorite(ProductModel product) {
     return _favoriteBox.values.contains(product);
   }
+  bool isDarkMode = false;
+
+  ThemeMode get themeMode => isDarkMode ? ThemeMode.dark : ThemeMode.light;
+
+  void toggleTheme() {
+    isDarkMode = !isDarkMode;
+    notifyListeners();
+  }
 
   void addToFavorite(ProductModel product) {
     if (!_favoriteBox.values.contains(product)) {
